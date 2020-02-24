@@ -4,10 +4,9 @@ Logiciel de gestion interne de bibliothèque.
 ## Terminé
 
 - Découpage en paquetages (services, mediatheque, persistantData)
+- Intégrer le JDBC
 
 ## À faire
-
-- Intégrer le JDBC
 - Système de connexion
 - Liste d'adresses IP
 - Requêtes documents pour la base de données (Ajouter, Récupérer, Mettre à jour)
