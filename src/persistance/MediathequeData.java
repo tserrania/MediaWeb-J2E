@@ -1,9 +1,14 @@
 package persistance;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import mediatek2020.*;
@@ -18,7 +23,7 @@ import mediatek2020.items.*;
 
 public class MediathequeData implements PersistentMediatheque {
 	private static Connection connect;
-	private static PreparedStatement allDocSt;
+	private static Statement allDocSt;
 	private static PreparedStatement getUsrSt;
 	private static PreparedStatement getDocSt;
 	private static PreparedStatement addDocSt;
@@ -26,9 +31,10 @@ public class MediathequeData implements PersistentMediatheque {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "ETUDIANT", "ETUDIANT");
+			allDocSt = connect.createStatement(); 
 			getUsrSt = connect.prepareStatement("SELECT * FROM UTILISATEUR WHERE login = ? AND password = ?"); 
 			getDocSt = connect.prepareStatement("SELECT * FROM DOCUMENT WHERE iddoc = ?"); 
-			getDocSt = connect.prepareStatement("INSERT INTO DOCUMENT(iddoc, title, author, description) VALUES(doc_seq.next, ?, ?, ?)"); 
+			addDocSt = connect.prepareStatement("INSERT INTO DOCUMENT(iddoc, title, author, description) VALUES(doc_seq.next, ?, ?, ?)"); 
 
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -45,7 +51,19 @@ public class MediathequeData implements PersistentMediatheque {
 	 */
 	@Override
 	public List<Document> tousLesDocuments() {
-		return null;
+		ResultSet r;
+		List<Document> l = new ArrayList<>();
+		try {
+			r = allDocSt.executeQuery("SELECT * FROM DOCUMENT");
+			while (r.next()) {
+				l.add(new DocumentBiblio(r.getInt("idDoc"), r.getString("title"), r.getString("author"), r.getString("description")));
+			}
+			r.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return l;
 	}
 
 	/** 
@@ -54,7 +72,24 @@ public class MediathequeData implements PersistentMediatheque {
 	 */
 	@Override
 	public Utilisateur getUser(String login, String password) {
-		return null;
+		ResultSet r;
+		Utilisateur u = null;
+		synchronized(getUsrSt) {
+			try {
+
+				getUsrSt.setString(1, login);
+				getUsrSt.setString(2, password);
+				r = getUsrSt.executeQuery();
+				if (r.next()) {
+					u = new UtilisateurBiblio(r.getString("name"), r.getInt("bibliothecaire")!=0);
+				}
+				r.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
+		return u;
 	}
 
 	/**
@@ -63,6 +98,17 @@ public class MediathequeData implements PersistentMediatheque {
 	 */
 	@Override
 	public Document getDocument(int numDocument) {
+		ResultSet r;
+		try {
+			r = getDocSt.executeQuery();
+			while (r.next()) {
+				// Do something
+			}
+			r.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return null;
 	}
 

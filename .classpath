@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="mediatheque.jar"/>
 	<classpathentry kind="lib" path="ojdbc6.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
