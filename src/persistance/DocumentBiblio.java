@@ -8,13 +8,14 @@ import mediatek2020.items.Utilisateur;
 
 public class DocumentBiblio implements Document {
 	private int id;
+	private int type;
 	private String titre;
 	private String auteur;
 	private String description;
 	
 	
 	
-	public DocumentBiblio(int id, String titre, String auteur, String description) {
+	public DocumentBiblio(int id, int type, String titre, String auteur, String description) {
 		this.id = id;
 		this.titre = titre;
 		this.auteur = auteur;
@@ -23,7 +24,7 @@ public class DocumentBiblio implements Document {
 
 	@Override
 	public Object[] data() {
-		return new Object[] {id, titre, auteur, description};
+		return new Object[] {id, type, titre, auteur, description};
 	}
 
 	@Override
