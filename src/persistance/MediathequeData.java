@@ -22,23 +22,7 @@ import mediatek2020.items.*;
  */
 
 public class MediathequeData implements PersistentMediatheque {
-	private static Connection connect;
-	private static Statement allDocSt;
-	private static PreparedStatement getUsrSt;
-	private static PreparedStatement getDocSt;
-	private static PreparedStatement addDocSt;
 	static {
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "ETUDIANT", "ETUDIANT");
-			allDocSt = connect.createStatement(); 
-			getUsrSt = connect.prepareStatement("SELECT * FROM UTILISATEUR WHERE login = ? AND password = ?"); 
-			getDocSt = connect.prepareStatement("SELECT * FROM DOCUMENT WHERE iddoc = ?"); 
-			addDocSt = connect.prepareStatement("INSERT INTO DOCUMENT(iddoc, type, title, author, description) VALUES(doc_seq.next, ?, ?, ?, ?)"); 
-
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
 		Mediatheque.getInstance().setData(new MediathequeData());
 	}
 
@@ -53,9 +37,9 @@ public class MediathequeData implements PersistentMediatheque {
 		ResultSet r;
 		List<Document> l = new ArrayList<>();
 		try {
-			r = allDocSt.executeQuery("SELECT * FROM DOCUMENT");
+			r = BDAccess.executeAllDocs();
 			while (r.next()) {
-				l.add(new DocumentBiblio(r.getInt("idDoc"), r.getInt("type"), r.getString("title"), r.getString("author"), r.getString("description")));
+				l.add(new DocumentBiblio(r.getInt("idDoc"), r.getInt("typeDoc"), r.getString("title"), r.getString("author"), r.getString("description")));
 			}
 			r.close();
 		} catch (SQLException e) {
@@ -74,19 +58,14 @@ public class MediathequeData implements PersistentMediatheque {
 		ResultSet r;
 		Utilisateur u = null;
 		try {
-
-			synchronized(getUsrSt) {
-				getUsrSt.setString(1, login);
-				getUsrSt.setString(2, password);
-				r = getUsrSt.executeQuery();
-			}
+			r = BDAccess.executeGetUser(login, password);
 			if (r.next()) {
-				u = new UtilisateurBiblio(r.getString("name"), r.getInt("bibliothecaire")!=0);
+				u = new UtilisateurBiblio(r.getInt("idUser"), r.getString("name"), r.getInt("bibliothecaire")!=0);
 			}
 			r.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 		return u;
 	}
 
@@ -99,10 +78,7 @@ public class MediathequeData implements PersistentMediatheque {
 		ResultSet r;
 		Document d = null;
 		try {
-			synchronized(getUsrSt) {
-				getDocSt.setInt(1, numDocument);
-				r = getDocSt.executeQuery();
-			}
+			r = BDAccess.executeGetDoc(numDocument);
 			if (r.next()) {
 				d = new DocumentBiblio(r.getInt("idDoc"), r.getInt("type"), r.getString("title"), r.getString("author"), r.getString("description"));
 			}

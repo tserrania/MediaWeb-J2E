@@ -13,10 +13,9 @@ public class DocumentBiblio implements Document {
 	private String auteur;
 	private String description;
 	
-	
-	
 	public DocumentBiblio(int id, int type, String titre, String auteur, String description) {
 		this.id = id;
+		this.type = type;
 		this.titre = titre;
 		this.auteur = auteur;
 		this.description = description;
@@ -29,7 +28,8 @@ public class DocumentBiblio implements Document {
 
 	@Override
 	public void emprunter(Utilisateur user) throws EmpruntException {
-		
+		int iduser = (Integer) user.data()[0];
+		BDAccess.empruntDoc(id, iduser);
 	}
 
 	@Override

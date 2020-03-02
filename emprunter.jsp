@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="mediatek2020.Mediatheque" %>
 <%@ page import="mediatek2020.items.Utilisateur" %>
+<%@ page import="mediatek2020.items.Document" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <%
 	Utilisateur u = null;
@@ -8,12 +11,14 @@
 	} else {
 		getServletContext().getRequestDispatcher("/").forward(request, response);
 	}
-
+	if (u.isBibliothecaire()) {
+		getServletContext().getRequestDispatcher("/").forward(request, response);
+	}
 %>
 <html lang='fr'>
 	<head>
 <meta charset='utf-8'>
-<title>Bibliothèque - Accueil</title>
+<title>Bibliothèque - Emprunter</title>
 		
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -34,19 +39,54 @@
 	crossorigin="anonymous"></script>
 	</head>
 	<body>
-	<h1>Bonjour, <%=u.name()%></h1>
-	<h2>Que souhaitez-vous faire ?</h2>
-	<% if (u.isBibliothecaire()) {
-	%>
-	<a class="btn btn-success" href="./ajouter">Ajouter un Document</a>
-	<%} else {%>
-	<a class="btn btn-success" href="./emprunter">Emprunter un Document</a>
-	<br>
-	<br>
-	<a class="btn btn-success" href="./rendre">Rendre un Document</a>
-	<%} %>
-	<br>
-	<br>
-	<a class="btn btn-danger" href="./deconnexion">Se Déconnecter</a>
+	<h2>Que souhaitez-vous emprunter ?</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Type</th>
+				<th scope="col">Titre</th>
+				<th scope="col">Auteur</th>
+				<th scope="col">Description</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for (Document d:Mediatheque.getInstance().tousLesDocuments()) {
+				Object[] data = d.data();
+			%>
+			<tr>
+				<td>
+				<% switch ((Integer)data[1]) {
+				case 0:
+				%>
+				Livre
+				<% 
+				break;
+				case 1:
+				%>
+				DVD
+				<% 
+				break;
+				case 2:
+				%>
+				Jeu-vidéo
+				<% 
+				break;
+				default:
+				%>
+				Inconnu
+				<% 
+				}
+				%>
+				</td>
+				<td><%=data[2]%></td>
+				<td><%=data[3]%></td>
+				<td><%=data[4]%></td>
+				<td><a class="btn btn-success" href="./emprunter?iddoc=<%=data[0]%>">Emprunter</a></td>
+			</tr>
+			<%}%>
+		</tbody>
+	</table>
+	<a class="btn btn-info" href="./accueil">Retour</a>
 	</body>
 </html>

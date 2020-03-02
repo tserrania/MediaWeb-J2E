@@ -6,16 +6,18 @@ public class UtilisateurBiblio implements Utilisateur {
 
 	private boolean bibliothecaire;
 	private String nom;
+	private int id;
 	
 
-	public UtilisateurBiblio(String nom, boolean bibliothecaire) {
+	public UtilisateurBiblio(int id, String nom, boolean bibliothecaire) {
+		this.id = id;
 		this.nom = nom;
 		this.bibliothecaire = bibliothecaire;
 	}
 
 	@Override
 	public Object[] data() {
-		return new Object[]{nom, bibliothecaire};
+		return new Object[]{id};
 	}
 
 	@Override

@@ -1,5 +1,10 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <%
+	if (session.getAttribute("utilisateur")!=null) {
+		getServletContext().getRequestDispatcher("/accueil").forward(request, response);
+	}
+	
 	Boolean valide;
 	if (request.getAttribute("valide") == null) {
 		valide = true;
@@ -10,7 +15,7 @@
 <html lang='fr'>
 <head>
 <meta charset='utf-8'>
-<title>Biblioth�que - Authentification</title>
+<title>Bibliothèque - Authentification</title>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -31,22 +36,28 @@
 	crossorigin="anonymous"></script>
 </head>
 <body>
-	<form method="post" action="authentication" class="form-group">
-		<label>Identifiant : </label> <br> 
-		<input class="form-control" type="text" name="login">
-		<br>
-		<label>Mot de passe : </label>
-		<br>
-		<input class="form-control" type="password" name="password">
-		<br>
-		<input type="submit" value="Connexion" class="btn btn-default">
-		<%
-			if (!valide) {
-		%>
-		<h1>Identifiant ou mot de passe incorrects</h1>
-		<%
-			}
-		%>
-	</form>
+	<div class="content-fluid">
+		<div class="col-sm-4 col-sm-offset-4">
+			<h1>Bienvenue dans la médiathèque</h1>
+			<h2>Connexion</h2>
+			<form method="post" action="authentication" class="form-group">
+				<label>Identifiant : </label> <br> 
+				<input class="form-control" type="text" name="login">
+				<br>
+				<label>Mot de passe : </label>
+				<br>
+				<input class="form-control" type="password" name="password">
+				<br>
+				<input type="submit" value="Connexion" class="btn btn-info">
+				<%
+					if (!valide) {
+				%>
+				<p style="color:red;">Identifiant ou mot de passe incorrects</p>
+				<%
+					}
+				%>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

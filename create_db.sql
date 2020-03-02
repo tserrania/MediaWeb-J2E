@@ -12,7 +12,7 @@ CREATE TABLE UTILISATEUR (
 
 CREATE TABLE DOCUMENT (
 	idDoc INTEGER CONSTRAINT pk_document PRIMARY KEY,
-	type INTEGER,
+	typeDoc INTEGER,
 	title VARCHAR2(30),
 	author VARCHAR2(30),
 	description VARCHAR2(255),
@@ -30,13 +30,26 @@ CREATE SEQUENCE doc_seq
  NOCYCLE;
  
  INSERT INTO UTILISATEUR(idUser, login, password, name)
- VALUES(0, 'tyefen', 'okok', 'Tyefen');
+ VALUES(0, 'tyefen', 'user', 'Tyefen');
+ INSERT INTO UTILISATEUR(idUser, login, password, name, bibliothecaire)
+ VALUES(1, 'brette', 'biblio', 'Brette', 1);
  
- INSERT INTO DOCUMENT(idDoc, type, title, author, description)
- VALUES(doc_seq.nextval, 'Les Miserables', 0, 'Victor Hugo', 'Un livre.');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 0, 'Les Miserables', 'Victor Hugo', 'Un livre.');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 0, 'Mathilda', 'Roal Dahl', 'Un autre livre.');
  
- INSERT INTO DOCUMENT(idDoc, type, title, author, description)
- VALUES(doc_seq.nextval, 'Titanic', 1, 'James Cameron', 'Un film.');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 1, 'Titanic', 'James Cameron', 'Un film.');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 1, 'Titanic', 'James Cameron', 'Un autre film.');
  
- INSERT INTO DOCUMENT(idDoc, type, title, author, description)
- VALUES(doc_seq.nextval, 'Pokemon Donjon Mystere DX', 2, 'Spike Chunsoft', 'Un jeu');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 2, 'Steam Sweat and Struggle', 'PJS4', 'Un jeu.');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 2, 'Animal Crossing: New Horizons', 'Nintendo', 'Un autre jeu.');
+ INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
+ VALUES(doc_seq.nextval, 2, 'Pokemon Donjon Mystere DX', 'Spike Chunsoft', 'Encore un autre jeu.');
+
+COMMIT
+/

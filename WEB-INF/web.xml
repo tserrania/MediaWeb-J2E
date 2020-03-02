@@ -7,4 +7,30 @@
 		<servlet-name>authServlet</servlet-name> 
 		<url-pattern>/authentication</url-pattern> 
 	</servlet-mapping> 
+	
+	<servlet>
+		<servlet-name>accServlet</servlet-name>
+		<servlet-class>services.AccueilServlet</servlet-class>
+	</servlet>
+	<servlet-mapping> 
+		<servlet-name>accServlet</servlet-name> 
+		<url-pattern>/accueil</url-pattern> 
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>empServlet</servlet-name>
+		<servlet-class>services.EmpruntServlet</servlet-class>
+	</servlet>
+	<servlet-mapping> 
+		<servlet-name>empServlet</servlet-name> 
+		<url-pattern>/emprunter</url-pattern> 
+	</servlet-mapping> 
+	<servlet>
+		<servlet-name>decoServlet</servlet-name>
+		<servlet-class>services.DeconnexionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping> 
+		<servlet-name>decoServlet</servlet-name> 
+		<url-pattern>/deconnexion</url-pattern> 
+	</servlet-mapping> 
 </web-app>
