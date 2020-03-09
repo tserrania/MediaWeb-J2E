@@ -7,15 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import mediatek2020.items.EmpruntException;
+import mediatek2020.items.RetourException;
 
 public class BDAccess {
 	private static Connection connect;
-	private static PreparedStatement addDocSt;
 	static {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "ETUDIANT", "ETUDIANT");
-			addDocSt = connect.prepareStatement("INSERT INTO DOCUMENT(iddoc, type, title, author, description) VALUES(doc_seq.next, ?, ?, ?, ?)"); 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -40,7 +39,38 @@ public class BDAccess {
 		return r;
 	}
 	public static void empruntDoc(int iddoc, int iduser) throws EmpruntException{
-		PreparedStatement getDocSt = connect.prepareStatement("UPDATE DOCUMENT SET WHERE iddoc = ?"); 
-		int nb = getDocSt.executeUpdate();
+		int nb = 0;
+		try {
+			PreparedStatement updDocSt = connect.prepareStatement("UPDATE DOCUMENT SET emprunte = 1, iduser = ? WHERE iddoc = ? AND emprunte = 0 AND (iduser IS NULL OR iduser = ?)"); 
+			updDocSt.setInt(1, iduser);
+			updDocSt.setInt(2, iddoc);
+			updDocSt.setInt(3, iduser);
+			nb = updDocSt.executeUpdate();
+		}
+		catch (SQLException e) {}
+		if (nb==0) {
+			throw new EmpruntException();
+		}
+	}
+	public static void retourDoc(int iddoc, int iduser) throws RetourException {
+		int nb = 0;
+		try {
+			PreparedStatement updDocSt = connect.prepareStatement("UPDATE DOCUMENT SET emprunte = 0, iduser = NULL WHERE iddoc = ? AND iduser = ?"); 
+			updDocSt.setInt(1, iddoc);
+			updDocSt.setInt(2, iduser);
+			nb = updDocSt.executeUpdate();
+		}
+		catch (SQLException e) {}
+		if (nb==0) {
+			throw new RetourException();
+		}
+	}
+	public static void nouveauDoc(int type, String titre, String auteur, String description) throws SQLException {
+		PreparedStatement addDocSt = connect.prepareStatement("INSERT INTO DOCUMENT(iddoc, typedoc, title, author, description) VALUES(doc_seq.nextval, ?, ?, ?, ?)"); 
+		addDocSt.setInt(1, type);
+		addDocSt.setString(2, titre);
+		addDocSt.setString(3, auteur);
+		addDocSt.setString(4, description);
+		addDocSt.executeQuery();
 	}
 }

@@ -1,7 +1,6 @@
 package services;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import mediatek2020.Mediatheque;
-import mediatek2020.items.Document;
 import mediatek2020.items.Utilisateur;
 
 public class AuthentificationServlet extends HttpServlet{

@@ -1,18 +1,19 @@
 package persistance;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import mediatek2020.*;
-import mediatek2020.items.*;
+import mediatek2020.Mediatheque;
+import mediatek2020.PersistentMediatheque;
+import mediatek2020.items.Document;
+import mediatek2020.items.Utilisateur;
+import persistance.documents.DVD;
+import persistance.documents.JeuVideo;
+import persistance.documents.Livre;
+import persistance.utilisateurs.Bibliothecaire;
+import persistance.utilisateurs.Client;
 
 /**
  * classe mono-instance  dont l'unique instance est injectée dans Mediatheque
@@ -29,6 +30,24 @@ public class MediathequeData implements PersistentMediatheque {
 	private MediathequeData() {
 	}
 
+	private Document createDocFromResultSet(ResultSet r) throws SQLException {
+		Integer type = r.getInt("typeDoc");
+		Integer iduser = r.getInt("iduser");
+		if (iduser==0) {
+			iduser = null;
+		}
+		boolean emprunte = r.getInt("emprunte")!=0;
+		switch (type) {
+		case 0:
+			return new Livre(r.getInt("idDoc"), r.getString("title"), r.getString("author"), r.getString("description"), emprunte , iduser);
+		case 1:
+			return new DVD(r.getInt("idDoc"), r.getString("title"), r.getString("author"), r.getString("description"), emprunte, iduser);
+		case 2:
+			return new JeuVideo(r.getInt("idDoc"), r.getString("title"), r.getString("author"), r.getString("description"), emprunte, iduser);
+		default:
+			return null;
+		}
+	}
 	/**
 	 * renvoie la liste de tous les documents de la bibliothèque
 	 */
@@ -39,7 +58,10 @@ public class MediathequeData implements PersistentMediatheque {
 		try {
 			r = BDAccess.executeAllDocs();
 			while (r.next()) {
-				l.add(new DocumentBiblio(r.getInt("idDoc"), r.getInt("typeDoc"), r.getString("title"), r.getString("author"), r.getString("description")));
+				Document d = createDocFromResultSet(r);
+				if (d!=null) {
+					l.add(d);
+				}
 			}
 			r.close();
 		} catch (SQLException e) {
@@ -60,7 +82,11 @@ public class MediathequeData implements PersistentMediatheque {
 		try {
 			r = BDAccess.executeGetUser(login, password);
 			if (r.next()) {
-				u = new UtilisateurBiblio(r.getInt("idUser"), r.getString("name"), r.getInt("bibliothecaire")!=0);
+				if (r.getInt("bibliothecaire")!=0) {
+					u = new Bibliothecaire(r.getInt("idUser"), r.getString("name"));
+				} else {
+					u = new Client(r.getInt("idUser"), r.getString("name"));
+				}
 			}
 			r.close();
 		} catch (SQLException e) {
@@ -80,7 +106,7 @@ public class MediathequeData implements PersistentMediatheque {
 		try {
 			r = BDAccess.executeGetDoc(numDocument);
 			if (r.next()) {
-				d = new DocumentBiblio(r.getInt("idDoc"), r.getInt("type"), r.getString("title"), r.getString("author"), r.getString("description"));
+				d = createDocFromResultSet(r);
 			}
 			r.close();
 		} catch (SQLException e) {
@@ -91,9 +117,11 @@ public class MediathequeData implements PersistentMediatheque {
 
 	@Override
 	public void nouveauDocument(int type, Object... args) {
-		// args[0] -> le titre
-		// args [1] --> l'auteur
-		// etc...
+		try {
+			BDAccess.nouveauDoc(type, (String) args[0], (String) args[1], (String) args[2]);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

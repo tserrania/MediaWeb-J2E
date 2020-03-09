@@ -30,9 +30,11 @@ CREATE SEQUENCE doc_seq
  NOCYCLE;
  
  INSERT INTO UTILISATEUR(idUser, login, password, name)
- VALUES(0, 'tyefen', 'user', 'Tyefen');
+ VALUES(1, 'tyefen', 'user', 'Tyefen');
+ INSERT INTO UTILISATEUR(idUser, login, password, name)
+ VALUES(2, 'aleryc', 'user', 'Aleryc');
  INSERT INTO UTILISATEUR(idUser, login, password, name, bibliothecaire)
- VALUES(1, 'brette', 'biblio', 'Brette', 1);
+ VALUES(3, 'brette', 'biblio', 'Brette', 1);
  
  INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
  VALUES(doc_seq.nextval, 0, 'Les Miserables', 'Victor Hugo', 'Un livre.');
@@ -42,7 +44,7 @@ CREATE SEQUENCE doc_seq
  INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
  VALUES(doc_seq.nextval, 1, 'Titanic', 'James Cameron', 'Un film.');
  INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
- VALUES(doc_seq.nextval, 1, 'Titanic', 'James Cameron', 'Un autre film.');
+ VALUES(doc_seq.nextval, 1, '???', '???', 'Un film inconnu.');
  
  INSERT INTO DOCUMENT(idDoc, typeDoc, title, author, description)
  VALUES(doc_seq.nextval, 2, 'Steam Sweat and Struggle', 'PJS4', 'Un jeu.');

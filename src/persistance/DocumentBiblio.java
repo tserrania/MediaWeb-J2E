@@ -6,40 +6,45 @@ import mediatek2020.items.ReservationException;
 import mediatek2020.items.RetourException;
 import mediatek2020.items.Utilisateur;
 
-public class DocumentBiblio implements Document {
+public abstract class DocumentBiblio implements Document {
 	private int id;
-	private int type;
 	private String titre;
 	private String auteur;
 	private String description;
+	private boolean emprunte;
+	private Integer idUser;
 	
-	public DocumentBiblio(int id, int type, String titre, String auteur, String description) {
+	public DocumentBiblio(int id, String titre, String auteur, String description, boolean emprunte, Integer idUser) {
 		this.id = id;
-		this.type = type;
 		this.titre = titre;
 		this.auteur = auteur;
 		this.description = description;
+		this.emprunte = emprunte;
+		this.idUser = idUser;
 	}
 
 	@Override
 	public Object[] data() {
-		return new Object[] {id, type, titre, auteur, description};
+		return new Object[] {id, getType(), titre, auteur, description, emprunte, idUser};
 	}
+
+	public abstract String getType();
 
 	@Override
 	public void emprunter(Utilisateur user) throws EmpruntException {
-		int iduser = (Integer) user.data()[0];
+		Integer iduser = (Integer) user.data()[0];
 		BDAccess.empruntDoc(id, iduser);
 	}
 
 	@Override
 	public void rendre(Utilisateur user) throws RetourException {
-		
+		Integer iduser = (Integer) user.data()[0];
+		BDAccess.retourDoc(id, iduser);
 	}
 
 	@Override
 	public void reserver(Utilisateur user) throws ReservationException {
-		
+		throw new ReservationException();
 	}
 
 }

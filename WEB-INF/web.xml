@@ -26,6 +26,23 @@
 		<url-pattern>/emprunter</url-pattern> 
 	</servlet-mapping> 
 	<servlet>
+		<servlet-name>retServlet</servlet-name>
+		<servlet-class>services.RetourServlet</servlet-class>
+	</servlet>
+	<servlet-mapping> 
+		<servlet-name>retServlet</servlet-name> 
+		<url-pattern>/rendre</url-pattern> 
+	</servlet-mapping> 
+	<servlet>
+		<servlet-name>addServlet</servlet-name>
+		<servlet-class>services.AjoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping> 
+		<servlet-name>addServlet</servlet-name> 
+		<url-pattern>/ajouter</url-pattern> 
+	</servlet-mapping> 
+	
+	<servlet>
 		<servlet-name>decoServlet</servlet-name>
 		<servlet-class>services.DeconnexionServlet</servlet-class>
 	</servlet>

@@ -24,7 +24,7 @@
 <html lang='fr'>
 	<head>
 <meta charset='utf-8'>
-<title>Bibliothèque - Emprunter</title>
+<title>Bibliothèque - Rendre</title>
 		
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -46,7 +46,7 @@
 	</head>
 	<body>
 		<div class="content-fluid">
-			<h2>Que souhaitez-vous emprunter ?</h2>
+			<h2>Que souhaitez-vous rendre ?</h2>
 			<table class="table">
 				<thead>
 					<tr>
@@ -60,21 +60,21 @@
 				<tbody>
 					<% if (iddoc!=null) { 
 						if (!valide) { %>
-							<p style="color:red;">Impossible d'emprunter ce document !</p>
+							<p style="color:red;">Impossible de rendre ce document !</p>
 					<%	} else { %>
-							<p style="color:green;">Document emprunté !</p>
+							<p style="color:green;">Document rendu !</p>
 					<%}
 					}%>
 					<% for (Document d:Mediatheque.getInstance().tousLesDocuments()) {
 						Object[] data = d.data();
-						if (!((Boolean)data[5]) && ((Integer)data[6])==null) {
+						if ((Integer)data[6]==u.data()[0]) {
 					%>
 					<tr>
 						<td><%=data[1]%></td>
 						<td><%=data[2]%></td>
 						<td><%=data[3]%></td>
 						<td><%=data[4]%></td>
-						<td><a class="btn btn-success" href="./emprunter?iddoc=<%=data[0]%>">Emprunter</a></td>
+						<td><a class="btn btn-success" href="./rendre?iddoc=<%=data[0]%>">Rendre</a></td>
 					</tr>
 					<%	}
 					}%>

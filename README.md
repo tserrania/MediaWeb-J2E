@@ -7,9 +7,6 @@ Logiciel de gestion interne de bibliothèque.
 - Intégrer le JDBC
 - Système de connexion
 - Requêtes utilisateurs pour la base de données
-
-## À faire
-- Liste d'adresses IP
 - Requêtes documents pour la base de données (Ajouter, Récupérer, Mettre à jour)
 
 ### Abonné

@@ -25,10 +25,10 @@ public class EmpruntServlet extends HttpServlet{
 				Document d = Mediatheque.getInstance().getDocument(id);
 				if (d!=null) {
 					try {
-						d.emprunter((Utilisateur) session.getAttribute("utilisateur"));
-						request.setAttribute("valide", valide);
+						Mediatheque.getInstance().emprunter(d, (Utilisateur) session.getAttribute("utilisateur"));
+						valide = true;
 					} catch (EmpruntException e) {
-						
+						valide = false;
 					}
 				}
 				request.setAttribute("valide", valide);

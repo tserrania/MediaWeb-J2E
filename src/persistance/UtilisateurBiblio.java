@@ -2,17 +2,15 @@ package persistance;
 
 import mediatek2020.items.Utilisateur;
 
-public class UtilisateurBiblio implements Utilisateur {
+public abstract class UtilisateurBiblio implements Utilisateur {
 
-	private boolean bibliothecaire;
 	private String nom;
 	private int id;
 	
 
-	public UtilisateurBiblio(int id, String nom, boolean bibliothecaire) {
+	public UtilisateurBiblio(int id, String nom) {
 		this.id = id;
 		this.nom = nom;
-		this.bibliothecaire = bibliothecaire;
 	}
 
 	@Override
@@ -21,9 +19,7 @@ public class UtilisateurBiblio implements Utilisateur {
 	}
 
 	@Override
-	public boolean isBibliothecaire() {
-		return bibliothecaire;
-	}
+	public abstract boolean isBibliothecaire();
 
 	@Override
 	public String name() {
