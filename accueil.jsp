@@ -40,6 +40,9 @@
 	%>
 	<a class="btn btn-success" href="./ajouter">Ajouter un Document</a>
 	<%} else {%>
+	<a class="btn btn-success" href="./reserver">Réserver un Document</a>
+	<br>
+	<br>
 	<a class="btn btn-success" href="./emprunter">Emprunter un Document</a>
 	<br>
 	<br>

@@ -26,6 +26,14 @@
 		<url-pattern>/emprunter</url-pattern> 
 	</servlet-mapping> 
 	<servlet>
+		<servlet-name>resServlet</servlet-name>
+		<servlet-class>services.ReservationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping> 
+		<servlet-name>resServlet</servlet-name> 
+		<url-pattern>/reserver</url-pattern> 
+	</servlet-mapping> 
+	<servlet>
 		<servlet-name>retServlet</servlet-name>
 		<servlet-class>services.RetourServlet</servlet-class>
 	</servlet>

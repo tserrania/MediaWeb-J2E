@@ -44,7 +44,7 @@ public abstract class DocumentBiblio implements Document {
 
 	@Override
 	public void reserver(Utilisateur user) throws ReservationException {
-		throw new ReservationException();
+		throw new UnsupportedOperationException();
 	}
 
 }
